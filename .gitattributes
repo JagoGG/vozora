@@ -1,0 +1,2 @@
+# Los scripts de shell deben ir siempre con LF (bash en Linux no tolera CRLF)
+*.sh text eol=lf
