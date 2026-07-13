@@ -5,70 +5,74 @@
 <h1 align="center">Vozora</h1>
 
 <p align="center">
-  <strong>Dictado por voz privado, 100% local, para Windows — pensado para programar con la voz.</strong><br/>
-  Pulsa una tecla, habla, y el texto aparece en la app que tengas delante.
+  <strong>Private, 100% local voice dictation for Windows — built for coding by voice.</strong><br/>
+  Press a key, speak, and your words appear in whatever app you're using.
+</p>
+
+<p align="center">
+  <a href="README.es.md">Léeme en español</a>
 </p>
 
 ---
 
-## ¿Qué es Vozora?
+## What is Vozora?
 
-Vozora es una aplicación de escritorio de **speech-to-text** que convierte tu voz en texto en **cualquier aplicación de Windows**: editores de código, terminales, navegadores, chats… Funciona con un atajo global **push-to-talk** (por defecto `PageDown`): mantienes la tecla, dictas, sueltas, y Vozora escribe el texto transcrito donde tengas el cursor.
+Vozora is a desktop **speech-to-text** app that turns your voice into text in **any Windows application**: code editors, terminals, browsers, chat apps… It works with a global **push-to-talk** shortcut (default: `PageDown`): hold the key, dictate, release, and Vozora types the transcribed text wherever your cursor is.
 
-La diferencia clave frente a servicios de dictado en la nube: **todo ocurre en tu máquina**. El audio nunca sale de tu ordenador — los modelos de reconocimiento de voz se descargan una vez y se ejecutan en local.
+The key difference from cloud dictation services: **everything happens on your machine**. Your audio never leaves your computer — the speech-recognition models are downloaded once and run locally.
 
-## Basado en Handy 🤝
+## Built on Handy 🤝
 
-Vozora es un **fork de [Handy](https://github.com/cjpais/Handy)**, la estupenda app open source (MIT) de speech-to-text local creada por **CJ Pais**. Handy aporta la base sobre la que esto es posible: el pipeline de transcripción con `transcribe.cpp`, el sistema de ajustes y el andamiaje Tauri. Todo el crédito de esa base es suyo y de sus contribuidores — si buscas la app original, [está aquí](https://github.com/cjpais/Handy).
+Vozora is a **fork of [Handy](https://github.com/cjpais/Handy)**, the excellent open source (MIT) local speech-to-text app created by **CJ Pais**. Handy provides the foundation that makes this possible: the `transcribe.cpp` transcription pipeline, the settings system, and the Tauri scaffolding. Full credit for that foundation goes to CJ Pais and Handy's contributors — if you're looking for the original app, [it's here](https://github.com/cjpais/Handy).
 
-Vozora toma esa base y la lleva en una dirección propia: **dictar a herramientas de programación** (Claude Code, Cursor, terminales) de forma segura y cómoda. No está afiliado ni respaldado por CJ Pais. El detalle completo de la atribución está en [ATTRIBUTION.md](ATTRIBUTION.md) y la licencia MIT original se conserva intacta en [LICENSE](LICENSE).
+Vozora takes that foundation in its own direction: **dictating to programming tools** (Claude Code, Cursor, terminals) safely and comfortably. It is not affiliated with or endorsed by CJ Pais. Full attribution details are in [ATTRIBUTION.md](ATTRIBUTION.md), and the original MIT license is preserved unmodified in [LICENSE](LICENSE).
 
-### Qué aporta Vozora sobre Handy
+### What Vozora adds on top of Handy
 
-Mejoras funcionales:
+Functional improvements:
 
-- **🎯 Coding Mode** — un modo de dictado con tabla de frases orientada a código: hablas en lenguaje natural y las frases se traducen a símbolos y construcciones de programación antes de escribirse.
-- **🛡️ Confirmación de comandos destructivos** — si lo que vas a dictar a una terminal parece un comando peligroso (borrar, forzar, sobreescribir), Vozora lo retiene y te pide confirmación en un diálogo antes de pegarlo. Dictar a una shell deja de dar miedo.
-- **👤 Perfiles de dictado por aplicación** — Vozora detecta la ventana con foco y puede aplicar un modo de dictado distinto según la app de destino (p. ej., texto normal en el navegador, Coding Mode en la terminal).
-- **📦 Modo portable en el instalador** — instalación normal o carpeta autocontenida sin registro ni accesos directos, a elegir en el propio setup.
+- **🎯 Coding Mode** — a dictation mode with a code-oriented phrase table: you speak in natural language and phrases are translated into programming symbols and constructs before being typed.
+- **🛡️ Destructive-command confirmation** — if what you're about to dictate into a terminal looks like a dangerous command (delete, force, overwrite), Vozora holds it and asks for confirmation in a dialog before pasting. Dictating into a shell stops being scary.
+- **👤 Per-application dictation profiles** — Vozora detects the focused window and can apply a different dictation mode depending on the target app (e.g., plain text in the browser, Coding Mode in the terminal).
+- **📦 Portable mode in the installer** — choose between a normal install or a self-contained folder with no registry changes or shortcuts, right from the setup wizard.
 
-Robustez y privacidad sobre el motor heredado:
+Robustness and privacy fixes to the inherited engine:
 
-- Arreglado un **deadlock** en la carga de modelos: un fallo durante la carga dejaba el estado `is_loading` atascado y bloqueaba activaciones posteriores; ahora la carga usa un guard que siempre libera.
-- Los **errores de carga de modelos se muestran en la UI** (antes fallaban en silencio y parecía que el clic no hacía nada).
-- **Caché de ajustes en memoria** (lectura de settings sin tocar disco en cada acceso, con coherencia garantizada en escritura).
-- **Las claves API se enmascaran en los logs** de depuración — un volcado de log ya no puede filtrar tus claves de post-procesado.
-- Identidad propia limpia: rebrand completo, nueva paleta e iconografía, cabeceras HTTP propias.
+- Fixed a **deadlock** in model loading: a failure during load left the `is_loading` state stuck and blocked later activations; loading now uses a guard that always releases.
+- **Model-loading errors now surface in the UI** (they used to fail silently, making clicks look dead).
+- **In-memory settings cache** (settings reads no longer hit disk on every access, with write-through consistency).
+- **API keys are masked in debug logs** — a log dump can no longer leak your post-processing keys.
+- A clean standalone identity: full rebrand, new palette and iconography, and its own HTTP headers.
 
-## Características
+## Features
 
-- **Push-to-talk global** — dicta en cualquier app sin cambiar de ventana; el texto se escribe donde esté el foco.
-- **Transcripción 100% local** — motor `transcribe.cpp` con modelos GGUF (Whisper, Parakeet, Canary, Moonshine, GigaAM y más de 20 opciones descargables desde la propia app).
-- **Detección de voz (VAD)** — usa Silero VAD para recortar silencios y no transcribir ruido.
-- **Overlay en pantalla** — una píldora flotante muestra la onda de audio mientras grabas y el estado (grabando / transcribiendo).
-- **Post-procesado opcional con LLM** — configura cualquier proveedor compatible con la API de OpenAI para pulir la transcripción con tus propios prompts. Opcional; sin ello, nada sale de tu equipo.
-- **Historial de transcripciones** con búsqueda.
-- **22 idiomas de interfaz** y modelos multilingües.
-- **Temas claro / oscuro / sistema**.
+- **Global push-to-talk** — dictate into any app without switching windows; text is typed wherever the focus is.
+- **100% local transcription** — `transcribe.cpp` engine with GGUF models (Whisper, Parakeet, Canary, Moonshine, GigaAM and 20+ options downloadable from within the app).
+- **Voice activity detection (VAD)** — uses Silero VAD to trim silence and avoid transcribing noise.
+- **On-screen overlay** — a floating pill shows the audio waveform while you record, plus the current state (recording / transcribing).
+- **Optional LLM post-processing** — configure any OpenAI-compatible provider to polish transcriptions with your own prompts. Optional; without it, nothing leaves your machine.
+- **Transcription history** with search.
+- **22 interface languages** (including English and Spanish) and multilingual models.
+- **Light / dark / system themes**.
 
-## Instalación
+## Installation
 
-Descarga el instalador desde [Releases](../../releases):
+Download the installer from [Releases](../../releases):
 
-- **`Vozora_x.y.z_x64-setup.exe`** (recomendado) — instalador NSIS con opción de modo portable. Instala en `%LOCALAPPDATA%\Vozora` sin pedir permisos de administrador.
-- **`Vozora_x.y.z_x64_en-US.msi`** — alternativa MSI para despliegues corporativos (Intune/SCCM).
+- **`Vozora_x.y.z_x64-setup.exe`** (recommended) — NSIS installer with a portable-mode option. Installs to `%LOCALAPPDATA%\Vozora` without requiring administrator rights.
+- **`Vozora_x.y.z_x64_en-US.msi`** — MSI alternative for corporate deployments (Intune/SCCM).
 
-En el primer arranque, Vozora te guía para descargar un modelo de transcripción y probar el micrófono.
+On first launch, Vozora walks you through downloading a transcription model and testing your microphone.
 
-**Modelo recomendado: Nemotron Streaming 3.5** — transcripción en vivo (streaming) multilingüe en **28 idiomas** (español, inglés, francés, alemán, portugués, japonés, chino…), con muy buen equilibrio entre velocidad y precisión. Es el modelo con el que se desarrolla y prueba Vozora a diario.
+**Recommended model: Nemotron Streaming 3.5** — live (streaming) multilingual transcription across **28 languages** (English, Spanish, French, German, Portuguese, Japanese, Chinese…), with a great balance of speed and accuracy. It's the model Vozora is developed and tested with daily.
 
-> **Nota:** el instalador aún no está firmado digitalmente, así que Windows SmartScreen puede mostrar un aviso. Es el comportamiento normal para binarios sin certificado de firma; puedes compilarlo tú mismo desde este código si prefieres verificarlo.
+> **Note:** the installer is not yet code-signed, so Windows SmartScreen may show a warning. That's the normal behavior for binaries without a signing certificate; you can build from this source yourself if you prefer to verify it.
 
-> **Importante:** no ejecutes Vozora como administrador. El atajo global y la escritura de texto funcionan en tu sesión de usuario normal; una instancia elevada bloquea la comunicación entre procesos.
+> **Important:** don't run Vozora as administrator. The global shortcut and text injection work in your normal user session; an elevated instance breaks inter-process communication.
 
-## Cómo funciona por dentro
+## How it works under the hood
 
-Vozora es una app **Tauri 2**: backend en **Rust** y frontend en **React + TypeScript** renderizado con WebView2.
+Vozora is a **Tauri 2** app: a **Rust** backend and a **React + TypeScript** frontend rendered with WebView2.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -76,87 +80,87 @@ Vozora es una app **Tauri 2**: backend en **Rust** y frontend en **React + TypeS
 │                                                             │
 │  Frontend (React + TS)          Backend (Rust)              │
 │  ┌───────────────────┐          ┌────────────────────────┐  │
-│  │ Ventana ajustes   │◄─ IPC ──►│ Atajo global (hotkey)  │  │
-│  │ Onboarding        │          │ Captura de audio (cpal)│  │
-│  │ Historial         │          │ Silero VAD (onnx)      │  │
-│  │ Overlay grabación │          │ transcribe.cpp + GGUF  │  │
-│  │ Diálogo confirmar │          │ Coding Mode + perfiles │  │
-│  └───────────────────┘          │ Inyección de texto     │  │
+│  │ Settings window   │◄─ IPC ──►│ Global hotkey          │  │
+│  │ Onboarding        │          │ Audio capture (cpal)   │  │
+│  │ History           │          │ Silero VAD (onnx)      │  │
+│  │ Recording overlay │          │ transcribe.cpp + GGUF  │  │
+│  │ Confirm dialog    │          │ Coding Mode + profiles │  │
+│  └───────────────────┘          │ Text injection         │  │
 │                                 │ Tray + settings store  │  │
 │                                 └────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-El flujo de un dictado:
+The flow of a dictation:
 
-1. **Atajo** — el backend registra un hotkey global a nivel de sistema. Al pulsarlo, empieza la captura del micrófono y aparece el overlay.
-2. **Grabación** — el audio se captura con `cpal` y pasa por **Silero VAD** (ONNX) para descartar silencio.
-3. **Transcripción** — al soltar la tecla, el audio va al motor **transcribe.cpp**, que ejecuta el modelo GGUF elegido en CPU/GPU local.
-4. **Modo de dictado** — según el perfil de la app con foco, el texto puede pasar por **Coding Mode** (frases → código) y por la **puerta de comandos destructivos** si el destino es una terminal.
-5. **(Opcional) Post-proceso** — si has configurado un LLM, el texto pasa por tu prompt antes de escribirse.
-6. **Escritura** — el resultado se inyecta como texto en la aplicación con foco y se guarda en el historial.
+1. **Hotkey** — the backend registers a system-wide global hotkey. Pressing it starts microphone capture and shows the overlay.
+2. **Recording** — audio is captured with `cpal` and passed through **Silero VAD** (ONNX) to discard silence.
+3. **Transcription** — on key release, the audio goes to the **transcribe.cpp** engine, which runs your chosen GGUF model on local CPU/GPU.
+4. **Dictation mode** — depending on the focused app's profile, the text may pass through **Coding Mode** (phrases → code) and the **destructive-command gate** if the target is a terminal.
+5. **(Optional) Post-processing** — if you configured an LLM, the text runs through your prompt before being typed.
+6. **Typing** — the result is injected as text into the focused application and saved to history.
 
-### Dónde guarda las cosas
+### Where things are stored
 
-| Qué | Ruta |
+| What | Path |
 |---|---|
-| Ajustes | `%APPDATA%\com.vozora.desktop\settings_store.json` |
-| Modelos descargados | `%APPDATA%\com.vozora.desktop\models\` |
+| Settings | `%APPDATA%\com.vozora.desktop\settings_store.json` |
+| Downloaded models | `%APPDATA%\com.vozora.desktop\models\` |
 | Logs | `%LOCALAPPDATA%\com.vozora.desktop\logs\vozora.log` |
-| Ejecutable (instalación normal) | `%LOCALAPPDATA%\Vozora\vozora.exe` |
+| Executable (normal install) | `%LOCALAPPDATA%\Vozora\vozora.exe` |
 
-### CLI para diagnóstico
+### Diagnostic CLI
 
-El ejecutable acepta modo headless, útil para probar el backend sin GUI:
-
-```
-vozora.exe --list-models --json                 # lista modelos registrados
-vozora.exe --transcribe-file audio.wav --json   # transcribe un WAV completo
-```
-
-## Estructura del repositorio
+The executable supports a headless mode, useful for testing the backend without the GUI:
 
 ```
-├── src/                    # Frontend React + TypeScript
-│   ├── components/         #   UI (ajustes, onboarding, sidebar, diálogos de dictado)
-│   ├── overlay/            #   Overlay flotante de grabación
-│   ├── assets/             #   Logo y isotipo
-│   ├── styles/theme.css    #   Paleta (única fuente de verdad de colores)
-│   └── i18n/               #   Traducciones (22 idiomas)
-├── src-tauri/              # Backend Rust (Tauri 2)
-│   ├── src/                #   Audio, VAD, transcripción, hotkeys, coding_mode,
+vozora.exe --list-models --json                 # list registered models
+vozora.exe --transcribe-file audio.wav --json   # transcribe a full WAV file
+```
+
+## Repository structure
+
+```
+├── src/                    # React + TypeScript frontend
+│   ├── components/         #   UI (settings, onboarding, sidebar, dictation dialogs)
+│   ├── overlay/            #   Floating recording overlay
+│   ├── assets/             #   Logo and mark
+│   ├── styles/theme.css    #   Palette (single source of truth for colors)
+│   └── i18n/               #   Translations (22 languages)
+├── src-tauri/              # Rust backend (Tauri 2)
+│   ├── src/                #   Audio, VAD, transcription, hotkeys, coding_mode,
 │   │                       #   app_profile, tray, settings
-│   ├── icons/              #   Iconos de app
-│   ├── resources/          #   Iconos de tray, sonidos, VAD onnx
-│   ├── nsis/installer.nsi  #   Plantilla del instalador (con modo portable)
-│   └── tauri.conf.json     #   Configuración de app y bundle
-├── public/                 # Estáticos (release notes in-app)
-└── tests/                  # Tests Playwright
+│   ├── icons/              #   App icons
+│   ├── resources/          #   Tray icons, sounds, VAD onnx
+│   ├── nsis/installer.nsi  #   Installer template (with portable mode)
+│   └── tauri.conf.json     #   App and bundle configuration
+├── public/                 # Static files (in-app release notes)
+└── tests/                  # Playwright tests
 ```
 
-## Compilar desde el código
+## Building from source
 
-Requisitos: **Rust** (stable), **Bun**, y las build tools de Visual Studio (C++).
+Requirements: **Rust** (stable), **Bun**, and the Visual Studio C++ build tools.
 
 ```powershell
-bun install          # dependencias del frontend
-bun x tauri dev      # desarrollo con hot-reload de la app completa
-bun x tauri build    # build de producción → instaladores NSIS y MSI
+bun install          # frontend dependencies
+bun x tauri dev      # full-app development with hot reload
+bun x tauri build    # production build → NSIS and MSI installers
 ```
 
-Los instaladores quedan en `<target>/release/bundle/{nsis,msi}/`. Si el código vive en una unidad de red, define `CARGO_TARGET_DIR` hacia un disco local para acelerar la compilación de Rust.
+Installers land in `<target>/release/bundle/{nsis,msi}/`. If the code lives on a network drive, point `CARGO_TARGET_DIR` at a local disk to speed up the Rust build.
 
-## Privacidad
+## Privacy
 
-- El audio y las transcripciones **no salen de tu equipo**.
-- No hay telemetría ni analítica.
-- La única conexión de red por defecto es la **descarga de modelos** (una vez por modelo).
-- Si activas el post-procesado con un LLM externo, ese texto sí viaja al proveedor que tú configures — es opt-in y configurable por completo.
+- Audio and transcriptions **never leave your machine**.
+- No telemetry, no analytics.
+- The only network connection by default is **model downloads** (once per model).
+- If you enable post-processing with an external LLM, that text does travel to the provider you configure — it's fully opt-in and configurable.
 
-## Estado del proyecto
+## Project status
 
-Vozora está en desarrollo activo (v0.9.x). Windows es la plataforma prioritaria y la única probada a fondo; el código de Linux/macOS se hereda de la base y aún no está verificado en este fork. Los issues y sugerencias son bienvenidos.
+Vozora is under active development (v0.9.x). Windows is the primary and only thoroughly tested platform; the Linux/macOS code is inherited from the base and not yet verified in this fork. Issues and suggestions are welcome.
 
-## Licencia
+## License
 
-MIT — ver [LICENSE](LICENSE). Basado en [Handy](https://github.com/cjpais/Handy) de CJ Pais; atribución completa en [ATTRIBUTION.md](ATTRIBUTION.md).
+MIT — see [LICENSE](LICENSE). Based on [Handy](https://github.com/cjpais/Handy) by CJ Pais; full attribution in [ATTRIBUTION.md](ATTRIBUTION.md).
