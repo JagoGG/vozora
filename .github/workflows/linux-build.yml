@@ -1,0 +1,19 @@
+# Build manual de Vozora para Linux (AppImage x64).
+# Se lanza a mano desde la pestaña Actions (workflow_dispatch); reutiliza el
+# workflow "Build" que ya sabe compilar transcribe-cpp, resolver sus backends
+# dinámicos y reempaquetar el AppImage.
+name: Linux Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  linux-x64:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: ubuntu-24.04
+      target: x86_64-unknown-linux-gnu
+      build-args: "--bundles appimage"
+      upload-artifacts: true

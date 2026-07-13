@@ -58,7 +58,9 @@ Descarga el instalador desde [Releases](../../releases):
 - **`Vozora_x.y.z_x64-setup.exe`** (recomendado) — instalador NSIS con opción de modo portable. Instala en `%LOCALAPPDATA%\Vozora` sin pedir permisos de administrador.
 - **`Vozora_x.y.z_x64_en-US.msi`** — alternativa MSI para despliegues corporativos (Intune/SCCM).
 
-En el primer arranque, Vozora te guía para descargar un modelo de transcripción (recomendado: *Parakeet* para inglés o *Whisper* multilingüe) y probar el micrófono.
+En el primer arranque, Vozora te guía para descargar un modelo de transcripción y probar el micrófono.
+
+**Modelo recomendado: Nemotron Streaming 3.5** — transcripción en vivo (streaming) multilingüe en **28 idiomas** (español, inglés, francés, alemán, portugués, japonés, chino…), con muy buen equilibrio entre velocidad y precisión. Es el modelo con el que se desarrolla y prueba Vozora a diario.
 
 > **Nota:** el instalador aún no está firmado digitalmente, así que Windows SmartScreen puede mostrar un aviso. Es el comportamiento normal para binarios sin certificado de firma; puedes compilarlo tú mismo desde este código si prefieres verificarlo.
 
