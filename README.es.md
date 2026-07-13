@@ -59,8 +59,21 @@ Robustez y privacidad sobre el motor heredado:
 
 Descarga el instalador desde [Releases](../../releases):
 
+**Windows**
+
 - **`Vozora_x.y.z_x64-setup.exe`** (recomendado) — instalador NSIS con opción de modo portable. Instala en `%LOCALAPPDATA%\Vozora` sin pedir permisos de administrador.
 - **`Vozora_x.y.z_x64_en-US.msi`** — alternativa MSI para despliegues corporativos (Intune/SCCM).
+
+**Linux (experimental)**
+
+- **`Vozora_x.y.z_amd64.AppImage`** — un único archivo que funciona en cualquier distro x64 (Arch/CachyOS, Ubuntu, Fedora…):
+
+  ```bash
+  chmod +x Vozora_*.AppImage
+  ./Vozora_*.AppImage
+  ```
+
+  En sistemas muy mínimos puede hacer falta FUSE (`fuse2`). El build de Linux es temprano y aún no está probado a fondo — los reportes de issues valen oro.
 
 En el primer arranque, Vozora te guía para descargar un modelo de transcripción y probar el micrófono.
 
