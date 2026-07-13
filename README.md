@@ -157,9 +157,29 @@ Installers land in `<target>/release/bundle/{nsis,msi}/`. If the code lives on a
 - The only network connection by default is **model downloads** (once per model).
 - If you enable post-processing with an external LLM, that text does travel to the provider you configure — it's fully opt-in and configurable.
 
+## 🚀 Vision & Roadmap
+
+What you see today is **phase one** of a much bigger idea: **making your voice a first-class way to operate a computer.**
+
+Right now, Vozora types what you say. The destination is a full **voice-driven assistant for your machine**: you talk to your computer, and your computer does the work — opens applications, arranges windows, runs commands, navigates your files, automates the repetitive parts of your day. Everything designed local-first and private-first, so the intelligence serves you without your life leaving your device.
+
+- ✅ **Phase 1 — Voice dictation (you are here).** Push-to-talk dictation into any app, 100% local transcription, Coding Mode, per-app profiles, and a safety gate for dangerous commands. Solid, useful on its own, and the foundation everything else builds on.
+- 🔜 **Phase 2 — Voice commands.** Beyond typing text: "open the browser", "switch to the terminal", "close this window". Direct control of applications and windows by voice, with the same confirmation-gate philosophy for anything risky.
+- 🔭 **Phase 3 — Conversational computer control.** Chain real work in natural language: "open my project, run the tests and tell me what failed". Context awareness of what's on screen, per-application skills, and multi-step actions — like having a capable pair of hands that listens.
+- 🌍 **Phase 4 — An extensible local voice-agent platform.** The long-term goal: a platform anyone can extend with their own skills and automations, in any language, helping people everywhere handle their daily computing simpler, faster and better — without giving up their privacy.
+
+### How you can help
+
+This project isn't chasing money — it's chasing **people**: connections, collaborators, and users it genuinely helps. If the vision resonates:
+
+- ⭐ **Star the repo** — it's the simplest way to say "keep going" and helps others find it.
+- 🐛 **Test it and open issues** — every bug report from real hardware makes it better.
+- 🔧 **Contribute** — code, translations, docs, ideas. The roadmap above has room for many hands.
+- 📣 **Share it** — with anyone who codes by keyboard all day and never tried talking to their machine.
+
 ## Project status
 
-Vozora is under active development (v0.9.x). Windows is the primary and only thoroughly tested platform; the Linux/macOS code is inherited from the base and not yet verified in this fork. Issues and suggestions are welcome.
+Vozora is under active development (v0.9.x, phase 1 of the roadmap above) and updates ship regularly — the app checks for new versions and updates itself from this repository's releases. Windows is the primary and only thoroughly tested platform; the Linux/macOS code is inherited from the base and not yet verified in this fork. Issues and suggestions are welcome.
 
 ## License
 

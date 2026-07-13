@@ -157,9 +157,29 @@ Los instaladores quedan en `<target>/release/bundle/{nsis,msi}/`. Si el código 
 - La única conexión de red por defecto es la **descarga de modelos** (una vez por modelo).
 - Si activas el post-procesado con un LLM externo, ese texto sí viaja al proveedor que tú configures — es opt-in y configurable por completo.
 
+## 🚀 Visión y Roadmap
+
+Lo que ves hoy es la **fase uno** de una idea mucho más grande: **convertir tu voz en una forma de primera clase de manejar un ordenador.**
+
+Ahora mismo, Vozora escribe lo que dices. El destino es un **asistente completo por voz para tu máquina**: hablas con tu ordenador y tu ordenador hace el trabajo — abre aplicaciones, organiza ventanas, ejecuta comandos, navega por tus archivos, automatiza lo repetitivo de tu día. Todo diseñado local-first y privado-first, para que la inteligencia te sirva sin que tu vida salga de tu equipo.
+
+- ✅ **Fase 1 — Dictado por voz (estás aquí).** Dictado push-to-talk en cualquier app, transcripción 100% local, Coding Mode, perfiles por aplicación y puerta de seguridad para comandos peligrosos. Sólido, útil por sí solo, y la base sobre la que se construye todo lo demás.
+- 🔜 **Fase 2 — Comandos de voz.** Más allá de escribir texto: "abre el navegador", "cambia a la terminal", "cierra esta ventana". Control directo de aplicaciones y ventanas por voz, con la misma filosofía de confirmación para todo lo arriesgado.
+- 🔭 **Fase 3 — Control conversacional del ordenador.** Encadenar trabajo real en lenguaje natural: "abre mi proyecto, corre los tests y dime qué falló". Conciencia del contexto en pantalla, habilidades por aplicación y acciones multi-paso — como tener unas manos capaces que escuchan.
+- 🌍 **Fase 4 — Una plataforma local de agente por voz, extensible.** La meta a largo plazo: una plataforma que cualquiera pueda extender con sus propias habilidades y automatizaciones, en cualquier idioma, ayudando a personas de todo el mundo a procesar su día a día de forma más simple, más rápida y mejor — sin renunciar a su privacidad.
+
+### Cómo puedes ayudar
+
+Este proyecto no persigue dinero — persigue **personas**: conexiones, colaboradores y usuarios a los que de verdad les ayude. Si la visión resuena contigo:
+
+- ⭐ **Dale una estrella al repo** — es la forma más simple de decir "sigue adelante" y ayuda a que otros lo encuentren.
+- 🐛 **Pruébalo y abre issues** — cada reporte desde hardware real lo hace mejor.
+- 🔧 **Contribuye** — código, traducciones, documentación, ideas. El roadmap de arriba tiene sitio para muchas manos.
+- 📣 **Compártelo** — con cualquiera que programe con el teclado todo el día y nunca haya probado hablarle a su máquina.
+
 ## Estado del proyecto
 
-Vozora está en desarrollo activo (v0.9.x). Windows es la plataforma prioritaria y la única probada a fondo; el código de Linux/macOS se hereda de la base y aún no está verificado en este fork. Los issues y sugerencias son bienvenidos.
+Vozora está en desarrollo activo (v0.9.x, fase 1 del roadmap de arriba) y saca actualizaciones con regularidad — la app comprueba nuevas versiones y se actualiza sola desde las releases de este repositorio. Windows es la plataforma prioritaria y la única probada a fondo; el código de Linux/macOS se hereda de la base y aún no está verificado en este fork. Los issues y sugerencias son bienvenidos.
 
 ## Licencia
 
