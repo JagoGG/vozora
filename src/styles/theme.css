@@ -1,0 +1,41 @@
+/* Vozora Colors — paleta derivada del logo oficial: azul de marca (#1e88dd),
+   navy profundo (#0d2240) y lima del cursor (#b8c50f) como acento puntual. */
+
+:root {
+  /* Palette source of truth. Each themed color is defined once as a
+     light/dark pair; the active tokens below and the `data-theme` overrides
+     in App.css reference these, so a hex value lives in exactly one place. */
+  --light-color-text: #0e1626;
+  --light-color-background: #f6f8fb;
+  --light-color-logo-primary: #1e7fd0;
+  --light-color-logo-stroke: #0d2240;
+
+  --dark-color-text: #e8f0f9;
+  --dark-color-background: #0d1420;
+  --dark-color-logo-primary: #4da3f0;
+  --dark-color-logo-stroke: #a9cdf2;
+
+  /* Tokens that do not change between light and dark. El azul de marca es la
+     acción primaria (botones, toggles, sliders); el lima del cursor del
+     isotipo queda como acento puntual (caret del overlay). */
+  --color-background-ui: #1e7fd0;
+  --color-accent-lime: #b8c50f;
+  --color-text-stroke: #f6f6f6;
+  --color-mid-gray: #808080;
+
+  /* Active palette — defaults to light, follows the OS via the media query
+     below, or is forced by `data-theme` (see App.css). */
+  --color-text: var(--light-color-text);
+  --color-background: var(--light-color-background);
+  --color-logo-primary: var(--light-color-logo-primary);
+  --color-logo-stroke: var(--light-color-logo-stroke);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: var(--dark-color-text);
+    --color-background: var(--dark-color-background);
+    --color-logo-primary: var(--dark-color-logo-primary);
+    --color-logo-stroke: var(--dark-color-logo-stroke);
+  }
+}
