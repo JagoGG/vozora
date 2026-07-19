@@ -33,42 +33,184 @@ pub struct PhraseRule {
 /// that could be a prefix of them, since matching prefers the longest phrase
 /// match at a given position (see [`apply_coding_mode`]).
 pub const DEFAULT_PHRASE_TABLE: &[PhraseRule] = &[
-    PhraseRule { phrases: &["open paren", "open parenthesis", "abre parentesis", "abre paréntesis"], output: "(" },
-    PhraseRule { phrases: &["close paren", "close parenthesis", "cierra parentesis", "cierra paréntesis"], output: ")" },
-    PhraseRule { phrases: &["open brace", "open curly brace", "abre llave"], output: "{" },
-    PhraseRule { phrases: &["close brace", "close curly brace", "cierra llave"], output: "}" },
-    PhraseRule { phrases: &["open bracket", "open square bracket", "abre corchete"], output: "[" },
-    PhraseRule { phrases: &["close bracket", "close square bracket", "cierra corchete"], output: "]" },
-    PhraseRule { phrases: &["open angle bracket", "less than", "abre angular", "menor que"], output: "<" },
-    PhraseRule { phrases: &["close angle bracket", "greater than", "cierra angular", "mayor que"], output: ">" },
-    PhraseRule { phrases: &["new line", "newline", "nueva linea", "nueva línea"], output: "\n" },
-    PhraseRule { phrases: &["new paragraph", "nuevo parrafo", "nuevo párrafo"], output: "\n\n" },
-    PhraseRule { phrases: &["tab", "tab key", "tabulacion", "tabulación"], output: "\t" },
-    PhraseRule { phrases: &["semicolon", "punto y coma"], output: ";" },
-    PhraseRule { phrases: &["colon", "dos puntos"], output: ":" },
-    PhraseRule { phrases: &["comma", "coma"], output: "," },
-    PhraseRule { phrases: &["period", "full stop", "punto"], output: "." },
-    PhraseRule { phrases: &["dash", "hyphen", "guion", "guión"], output: "-" },
-    PhraseRule { phrases: &["underscore", "guion bajo", "guión bajo"], output: "_" },
-    PhraseRule { phrases: &["forward slash", "slash", "barra inclinada", "barra"], output: "/" },
-    PhraseRule { phrases: &["backslash", "back slash", "barra invertida"], output: "\\" },
-    PhraseRule { phrases: &["pipe", "vertical bar", "barra vertical"], output: "|" },
-    PhraseRule { phrases: &["ampersand", "and sign", "ampersand comercial"], output: "&" },
-    PhraseRule { phrases: &["asterisk", "star", "asterisco"], output: "*" },
-    PhraseRule { phrases: &["percent sign", "percent", "signo de porcentaje", "por ciento"], output: "%" },
-    PhraseRule { phrases: &["dollar sign", "dollar", "signo de dolar", "signo de dólar"], output: "$" },
-    PhraseRule { phrases: &["hash", "pound sign", "hashtag", "almohadilla"], output: "#" },
-    PhraseRule { phrases: &["at sign", "at symbol", "arroba"], output: "@" },
-    PhraseRule { phrases: &["equals sign", "equals", "signo igual", "igual"], output: "=" },
-    PhraseRule { phrases: &["plus sign", "plus", "signo mas", "signo más"], output: "+" },
-    PhraseRule { phrases: &["quote", "double quote", "comilla", "comillas"], output: "\"" },
-    PhraseRule { phrases: &["single quote", "apostrophe", "comilla simple"], output: "'" },
-    PhraseRule { phrases: &["backtick", "acento grave"], output: "`" },
-    PhraseRule { phrases: &["exclamation mark", "exclamation point", "signo de exclamacion", "signo de exclamación"], output: "!" },
-    PhraseRule { phrases: &["question mark", "signo de interrogacion", "signo de interrogación"], output: "?" },
-    PhraseRule { phrases: &["caret", "circumflex", "circunflejo"], output: "^" },
-    PhraseRule { phrases: &["tilde", "virgulilla"], output: "~" },
-    PhraseRule { phrases: &["space", "espacio"], output: " " },
+    PhraseRule {
+        phrases: &[
+            "open paren",
+            "open parenthesis",
+            "abre parentesis",
+            "abre paréntesis",
+        ],
+        output: "(",
+    },
+    PhraseRule {
+        phrases: &[
+            "close paren",
+            "close parenthesis",
+            "cierra parentesis",
+            "cierra paréntesis",
+        ],
+        output: ")",
+    },
+    PhraseRule {
+        phrases: &["open brace", "open curly brace", "abre llave"],
+        output: "{",
+    },
+    PhraseRule {
+        phrases: &["close brace", "close curly brace", "cierra llave"],
+        output: "}",
+    },
+    PhraseRule {
+        phrases: &["open bracket", "open square bracket", "abre corchete"],
+        output: "[",
+    },
+    PhraseRule {
+        phrases: &["close bracket", "close square bracket", "cierra corchete"],
+        output: "]",
+    },
+    PhraseRule {
+        phrases: &[
+            "open angle bracket",
+            "less than",
+            "abre angular",
+            "menor que",
+        ],
+        output: "<",
+    },
+    PhraseRule {
+        phrases: &[
+            "close angle bracket",
+            "greater than",
+            "cierra angular",
+            "mayor que",
+        ],
+        output: ">",
+    },
+    PhraseRule {
+        phrases: &["new line", "newline", "nueva linea", "nueva línea"],
+        output: "\n",
+    },
+    PhraseRule {
+        phrases: &["new paragraph", "nuevo parrafo", "nuevo párrafo"],
+        output: "\n\n",
+    },
+    PhraseRule {
+        phrases: &["tab", "tab key", "tabulacion", "tabulación"],
+        output: "\t",
+    },
+    PhraseRule {
+        phrases: &["semicolon", "punto y coma"],
+        output: ";",
+    },
+    PhraseRule {
+        phrases: &["colon", "dos puntos"],
+        output: ":",
+    },
+    PhraseRule {
+        phrases: &["comma", "coma"],
+        output: ",",
+    },
+    PhraseRule {
+        phrases: &["period", "full stop", "punto"],
+        output: ".",
+    },
+    PhraseRule {
+        phrases: &["dash", "hyphen", "guion", "guión"],
+        output: "-",
+    },
+    PhraseRule {
+        phrases: &["underscore", "guion bajo", "guión bajo"],
+        output: "_",
+    },
+    PhraseRule {
+        phrases: &["forward slash", "slash", "barra inclinada", "barra"],
+        output: "/",
+    },
+    PhraseRule {
+        phrases: &["backslash", "back slash", "barra invertida"],
+        output: "\\",
+    },
+    PhraseRule {
+        phrases: &["pipe", "vertical bar", "barra vertical"],
+        output: "|",
+    },
+    PhraseRule {
+        phrases: &["ampersand", "and sign", "ampersand comercial"],
+        output: "&",
+    },
+    PhraseRule {
+        phrases: &["asterisk", "star", "asterisco"],
+        output: "*",
+    },
+    PhraseRule {
+        phrases: &[
+            "percent sign",
+            "percent",
+            "signo de porcentaje",
+            "por ciento",
+        ],
+        output: "%",
+    },
+    PhraseRule {
+        phrases: &["dollar sign", "dollar", "signo de dolar", "signo de dólar"],
+        output: "$",
+    },
+    PhraseRule {
+        phrases: &["hash", "pound sign", "hashtag", "almohadilla"],
+        output: "#",
+    },
+    PhraseRule {
+        phrases: &["at sign", "at symbol", "arroba"],
+        output: "@",
+    },
+    PhraseRule {
+        phrases: &["equals sign", "equals", "signo igual", "igual"],
+        output: "=",
+    },
+    PhraseRule {
+        phrases: &["plus sign", "plus", "signo mas", "signo más"],
+        output: "+",
+    },
+    PhraseRule {
+        phrases: &["quote", "double quote", "comilla", "comillas"],
+        output: "\"",
+    },
+    PhraseRule {
+        phrases: &["single quote", "apostrophe", "comilla simple"],
+        output: "'",
+    },
+    PhraseRule {
+        phrases: &["backtick", "acento grave"],
+        output: "`",
+    },
+    PhraseRule {
+        phrases: &[
+            "exclamation mark",
+            "exclamation point",
+            "signo de exclamacion",
+            "signo de exclamación",
+        ],
+        output: "!",
+    },
+    PhraseRule {
+        phrases: &[
+            "question mark",
+            "signo de interrogacion",
+            "signo de interrogación",
+        ],
+        output: "?",
+    },
+    PhraseRule {
+        phrases: &["caret", "circumflex", "circunflejo"],
+        output: "^",
+    },
+    PhraseRule {
+        phrases: &["tilde", "virgulilla"],
+        output: "~",
+    },
+    PhraseRule {
+        phrases: &["space", "espacio"],
+        output: " ",
+    },
 ];
 
 /// One token of a phrase, lowercased, along with the literal it maps to when
@@ -83,14 +225,17 @@ fn compile_table(table: &[PhraseRule]) -> Vec<CompiledRule> {
         .iter()
         .flat_map(|rule| {
             rule.phrases.iter().map(move |phrase| CompiledRule {
-                tokens: phrase.split_whitespace().map(|w| w.to_lowercase()).collect(),
+                tokens: phrase
+                    .split_whitespace()
+                    .map(|w| w.to_lowercase())
+                    .collect(),
                 output: rule.output.to_string(),
             })
         })
         .collect();
     // Longest phrase (in tokens) first, so a longer match always wins over a
     // shorter one that happens to share a prefix.
-    rules.sort_by(|a, b| b.tokens.len().cmp(&a.tokens.len()));
+    rules.sort_by_key(|rule| std::cmp::Reverse(rule.tokens.len()));
     rules
 }
 
@@ -104,7 +249,12 @@ const TIGHT_LEFT: &[&str] = &[")", "}", "]", ">", ";", ",", ".", "!", "?", ":"];
 
 /// Whether a "unit" (a plain word or a matched phrase's literal output)
 /// suppresses the space that would otherwise be inserted before/after it.
-fn spacing(output: &str) -> (bool /* no_space_before */, bool /* no_space_after */) {
+fn spacing(
+    output: &str,
+) -> (
+    bool, /* no_space_before */
+    bool, /* no_space_after */
+) {
     if output.chars().all(char::is_whitespace) && !output.is_empty() {
         // Newlines/tabs/space itself already are the separator.
         (true, true)
@@ -126,7 +276,10 @@ pub fn apply_coding_mode_with_table(text: &str, table: &[PhraseRule]) -> String 
     let words: Vec<String> = text.split_whitespace().map(|w| w.to_string()).collect();
     let normalized: Vec<String> = words
         .iter()
-        .map(|w| w.trim_matches(|c: char| !c.is_alphanumeric()).to_lowercase())
+        .map(|w| {
+            w.trim_matches(|c: char| !c.is_alphanumeric())
+                .to_lowercase()
+        })
         .collect();
 
     let mut out = String::new();
@@ -204,7 +357,9 @@ pub fn looks_destructive(text: &str) -> bool {
         "wipefs",
     ];
 
-    SUBSTRING_PATTERNS.iter().any(|pattern| lower.contains(pattern))
+    SUBSTRING_PATTERNS
+        .iter()
+        .any(|pattern| lower.contains(pattern))
 }
 
 #[cfg(test)]
@@ -222,7 +377,9 @@ mod tests {
     #[test]
     fn translates_new_line_and_semicolon() {
         assert_eq!(
-            apply_coding_mode("let x equals sign 1 semicolon new line let y equals sign 2 semicolon"),
+            apply_coding_mode(
+                "let x equals sign 1 semicolon new line let y equals sign 2 semicolon"
+            ),
             "let x = 1;\nlet y = 2;"
         );
     }

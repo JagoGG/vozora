@@ -877,6 +877,77 @@ fn ensure_post_process_defaults(settings: &mut AppSettings) -> bool {
 }
 
 pub const SETTINGS_STORE_PATH: &str = "settings_store.json";
+const API_KEY_SERVICE: &str = "com.vozora.desktop.post-processing";
+
+fn api_key_entry(provider_id: &str) -> Result<keyring::Entry, String> {
+    keyring::Entry::new(API_KEY_SERVICE, provider_id)
+        .map_err(|e| format!("Secure credential store is unavailable: {e}"))
+}
+
+pub fn store_post_process_api_key(provider_id: &str, api_key: &str) -> Result<(), String> {
+    let entry = api_key_entry(provider_id)?;
+    if api_key.is_empty() {
+        match entry.delete_credential() {
+            Ok(()) | Err(keyring::Error::NoEntry) => Ok(()),
+            Err(e) => Err(format!("Failed to clear API key from secure storage: {e}")),
+        }
+    } else {
+        entry
+            .set_password(api_key)
+            .map_err(|e| format!("Failed to save API key in secure storage: {e}"))
+    }
+}
+
+fn load_post_process_api_key(provider_id: &str) -> Result<Option<String>, String> {
+    let entry = api_key_entry(provider_id)?;
+    match entry.get_password() {
+        Ok(value) => Ok(Some(value)),
+        Err(keyring::Error::NoEntry) => Ok(None),
+        Err(e) => Err(format!("Failed to read API key from secure storage: {e}")),
+    }
+}
+
+/// Returns a store-safe settings value. Existing plaintext keys are migrated
+/// to the operating-system credential store before being removed from JSON.
+/// If the secure store is unavailable, the legacy value is preserved to avoid
+/// silently destroying a user's credential.
+fn settings_value_for_store(settings: &AppSettings) -> serde_json::Value {
+    let mut persisted = settings.clone();
+    for (provider_id, api_key) in persisted.post_process_api_keys.iter_mut() {
+        if api_key.is_empty() {
+            continue;
+        }
+        match store_post_process_api_key(provider_id, api_key) {
+            Ok(()) => api_key.clear(),
+            Err(e) => warn!("{e}; retaining legacy credential until migration can succeed"),
+        }
+    }
+    serde_json::to_value(persisted).expect("settings serialize to JSON")
+}
+
+fn hydrate_post_process_api_keys(settings: &mut AppSettings) {
+    for provider in &settings.post_process_providers {
+        let current = settings
+            .post_process_api_keys
+            .entry(provider.id.clone())
+            .or_default();
+
+        if !current.is_empty() {
+            // Legacy plaintext value: migrate now. The store write performed by
+            // the caller clears it from JSON only after this succeeds.
+            if let Err(e) = store_post_process_api_key(&provider.id, current) {
+                warn!("Could not migrate API key for '{}': {e}", provider.id);
+            }
+            continue;
+        }
+
+        match load_post_process_api_key(&provider.id) {
+            Ok(Some(value)) => *current = value,
+            Ok(None) => {}
+            Err(e) => warn!("Could not load API key for '{}': {e}", provider.id),
+        }
+    }
+}
 
 pub fn get_default_settings() -> AppSettings {
     #[cfg(target_os = "windows")]
@@ -1101,18 +1172,25 @@ fn load_settings_from_store(app: &AppHandle) -> AppSettings {
         }
 
         if updated {
-            store.set("settings", serde_json::to_value(&settings).unwrap());
+            store.set("settings", settings_value_for_store(&settings));
         }
 
         settings
     } else {
         let default_settings = get_default_settings();
-        store.set("settings", serde_json::to_value(&default_settings).unwrap());
+        store.set("settings", settings_value_for_store(&default_settings));
         default_settings
     };
 
-    if ensure_post_process_defaults(&mut settings) {
-        store.set("settings", serde_json::to_value(&settings).unwrap());
+    let post_process_defaults_changed = ensure_post_process_defaults(&mut settings);
+    hydrate_post_process_api_keys(&mut settings);
+    if post_process_defaults_changed
+        || settings
+            .post_process_api_keys
+            .values()
+            .any(|value| !value.is_empty())
+    {
+        store.set("settings", settings_value_for_store(&settings));
     }
 
     settings
@@ -1223,7 +1301,7 @@ pub fn write_settings(app: &AppHandle, settings: AppSettings) {
         .store(crate::portable::store_path(SETTINGS_STORE_PATH))
         .expect("Failed to initialize store");
 
-    store.set("settings", serde_json::to_value(&settings).unwrap());
+    store.set("settings", settings_value_for_store(&settings));
     // Keep the read cache coherent with what was just persisted.
     *SETTINGS_CACHE.write().unwrap_or_else(|e| e.into_inner()) = Some(settings);
 }
@@ -1620,5 +1698,13 @@ mod tests {
         let out = format!("{:?}", map);
         assert!(!out.contains("secret"));
         assert!(out.contains("[REDACTED]"));
+    }
+
+    #[test]
+    fn empty_api_keys_are_safe_to_persist() {
+        let settings = get_default_settings();
+        let stored = settings_value_for_store(&settings);
+        let keys = stored["post_process_api_keys"].as_object().unwrap();
+        assert!(keys.values().all(|value| value.as_str() == Some("")));
     }
 }

@@ -23,7 +23,9 @@ interface VozoraKeysEvent {
   hotkey_string: string;
 }
 
-export const VozoraKeysShortcutInput: React.FC<VozoraKeysShortcutInputProps> = ({
+export const VozoraKeysShortcutInput: React.FC<
+  VozoraKeysShortcutInputProps
+> = ({
   descriptionMode = "tooltip",
   grouped = false,
   shortcutId,

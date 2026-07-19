@@ -10,7 +10,10 @@
 use crate::clipboard;
 use crate::settings::{get_settings, write_settings, AppProfile, DictationMode, PasteMethod};
 use std::sync::Mutex;
+use std::time::{Duration, Instant};
 use tauri::{AppHandle, Manager};
+
+const PENDING_PASTE_TTL: Duration = Duration::from_secs(60);
 
 #[tauri::command]
 #[specta::specta]
@@ -34,6 +37,14 @@ pub struct PendingPasteState(pub Mutex<Option<PendingPaste>>);
 pub struct PendingPaste {
     pub text: String,
     pub paste_method_override: Option<PasteMethod>,
+    pub target: Option<crate::app_profile::FocusedWindowTarget>,
+    pub created_at: Instant,
+}
+
+impl PendingPaste {
+    fn is_expired(&self) -> bool {
+        self.created_at.elapsed() > PENDING_PASTE_TTL
+    }
 }
 
 #[tauri::command]
@@ -47,9 +58,34 @@ pub fn confirm_pending_paste(app: AppHandle) -> Result<(), String> {
 
     match pending {
         Some(pending) => {
+            if pending.is_expired() {
+                return Err("The confirmation expired; paste was cancelled".to_string());
+            }
+            let target = pending
+                .target
+                .as_ref()
+                .ok_or_else(|| "The original target window could not be identified".to_string())?;
+            crate::app_profile::restore_focused_window(target)?;
             clipboard::paste_with_method_override(pending.text, app, pending.paste_method_override)
         }
         None => Err("No pending paste to confirm".to_string()),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn pending_paste_expires_after_ttl() {
+        let pending = PendingPaste {
+            text: "rm -rf ./build".to_string(),
+            paste_method_override: None,
+            target: None,
+            created_at: Instant::now() - PENDING_PASTE_TTL - Duration::from_millis(1),
+        };
+
+        assert!(pending.is_expired());
     }
 }
 

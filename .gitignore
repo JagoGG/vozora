@@ -43,27 +43,31 @@ blob-report/
 # Nix build output
 result
 
-# --- Vozora: material heredado del upstream, no se publica ---
+# --- Material heredado del upstream que no forma parte de Vozora ---
 .git-handy-backup/
 sponsor-images/
-.github/
 docs/
 nix/
 .nix/
 flake.nix
 flake.lock
-AGENTS.md
 CRUSH.md
 CLAUDE.md
 SESSION_REPORT.md
-CHANGELOG.md
-CONTRIBUTING.md
 CONTRIBUTING_TRANSLATIONS.md
-SECURITY.md
-PRIVACY.md
-BUILD.md
 .codex-tmp/
 src-tauri/resources/handy.png
 src/components/icons/HandyHand.tsx
 src/components/icons/HandyTextLogo.tsx
 src/components/settings/HandyKeysShortcutInput.tsx
+
+# Publish only the maintained GitHub automation; keep inherited templates and
+# experiments local until they are reviewed and rebranded.
+.github/*
+!.github/dependabot.yml
+!.github/workflows/
+.github/workflows/*
+!.github/workflows/build.yml
+!.github/workflows/ci.yml
+!.github/workflows/linux-build.yml
+!.github/workflows/release.yml

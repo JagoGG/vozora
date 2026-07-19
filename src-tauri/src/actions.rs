@@ -789,8 +789,10 @@ impl ShortcutAction for TranscribeAction {
                                 // Resolve the effective dictation mode: an app-profile match
                                 // (by focused window title) wins, otherwise the global default.
                                 let current_settings = get_settings(&ah);
-                                let (dictation_mode, paste_method_override) =
-                                    crate::app_profile::resolve_dictation_settings(&current_settings);
+                                let (dictation_mode, paste_method_override, target_window) =
+                                    crate::app_profile::resolve_dictation_settings(
+                                        &current_settings,
+                                    );
 
                                 let mut final_text = processed.final_text;
                                 if matches!(
@@ -804,7 +806,8 @@ impl ShortcutAction for TranscribeAction {
                                 let is_destructive_terminal_command = matches!(
                                     dictation_mode,
                                     crate::settings::DictationMode::TerminalCommand
-                                ) && crate::coding_mode::looks_destructive(&final_text);
+                                )
+                                    && crate::coding_mode::looks_destructive(&final_text);
 
                                 if is_destructive_terminal_command {
                                     // Never auto-paste text that looks like a destructive shell
@@ -821,11 +824,14 @@ impl ShortcutAction for TranscribeAction {
                                             *guard = Some(crate::commands::dictation::PendingPaste {
                                                 text: final_text.clone(),
                                                 paste_method_override,
+                                                target: target_window,
+                                                created_at: Instant::now(),
                                             });
                                         }
                                     }
                                     let _ = ah.emit("pending-destructive-paste", final_text);
                                     utils::hide_recording_overlay(&ah);
+                                    crate::show_main_window(&ah);
                                     change_tray_icon(&ah, TrayIconState::Idle);
                                 } else {
                                     let ah_clone = ah.clone();
@@ -833,7 +839,9 @@ impl ShortcutAction for TranscribeAction {
                                     let rm_for_paste = Arc::clone(&rm);
                                     ah.run_on_main_thread(move || {
                                         if rm_for_paste.was_cancelled_since(cancel_generation) {
-                                            debug!("Transcription operation cancelled before paste");
+                                            debug!(
+                                                "Transcription operation cancelled before paste"
+                                            );
                                             utils::hide_recording_overlay(&ah_clone);
                                             change_tray_icon(&ah_clone, TrayIconState::Idle);
                                             return;
