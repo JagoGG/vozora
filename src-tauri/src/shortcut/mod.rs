@@ -10,8 +10,8 @@
 //! setting and can be changed at runtime.
 
 mod handler;
-pub mod vozora_keys;
 mod tauri_impl;
+pub mod vozora_keys;
 
 use log::{error, info, warn};
 use serde::Serialize;
@@ -283,7 +283,8 @@ pub fn change_keyboard_implementation_setting(
     settings::write_settings(&app, settings);
 
     // Initialize new implementation if needed (VozoraKeys needs state)
-    if new_impl == KeyboardImplementation::VozoraKeys && initialize_vozora_keys_with_rollback(&app)? {
+    if new_impl == KeyboardImplementation::VozoraKeys && initialize_vozora_keys_with_rollback(&app)?
+    {
         // Shortcuts already registered during init
         return Ok(ImplementationChangeResult {
             success: true,
@@ -998,6 +999,7 @@ pub fn change_post_process_api_key_setting(
 ) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
     validate_provider_exists(&settings, &provider_id)?;
+    settings::store_post_process_api_key(&provider_id, &api_key)?;
     settings.post_process_api_keys.insert(provider_id, api_key);
     settings::write_settings(&app, settings);
     Ok(())

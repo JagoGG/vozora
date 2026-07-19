@@ -41,7 +41,7 @@ Robustness and privacy fixes to the inherited engine:
 - Fixed a **deadlock** in model loading: a failure during load left the `is_loading` state stuck and blocked later activations; loading now uses a guard that always releases.
 - **Model-loading errors now surface in the UI** (they used to fail silently, making clicks look dead).
 - **In-memory settings cache** (settings reads no longer hit disk on every access, with write-through consistency).
-- **API keys are masked in debug logs** — a log dump can no longer leak your post-processing keys.
+- **API keys use the operating-system credential store** and transcript contents are excluded from persistent logs.
 - A clean standalone identity: full rebrand, new palette and iconography, and its own HTTP headers.
 
 ## Features
@@ -115,12 +115,12 @@ The flow of a dictation:
 
 ### Where things are stored
 
-| What | Path |
-|---|---|
-| Settings | `%APPDATA%\com.vozora.desktop\settings_store.json` |
-| Downloaded models | `%APPDATA%\com.vozora.desktop\models\` |
-| Logs | `%LOCALAPPDATA%\com.vozora.desktop\logs\vozora.log` |
-| Executable (normal install) | `%LOCALAPPDATA%\Vozora\vozora.exe` |
+| What                        | Path                                                |
+| --------------------------- | --------------------------------------------------- |
+| Settings                    | `%APPDATA%\com.vozora.desktop\settings_store.json`  |
+| Downloaded models           | `%APPDATA%\com.vozora.desktop\models\`              |
+| Logs                        | `%LOCALAPPDATA%\com.vozora.desktop\logs\vozora.log` |
+| Executable (normal install) | `%LOCALAPPDATA%\Vozora\vozora.exe`                  |
 
 ### Diagnostic CLI
 
@@ -167,7 +167,7 @@ Installers land in `<target>/release/bundle/{nsis,msi}/`. If the code lives on a
 
 - Audio and transcriptions **never leave your machine**.
 - No telemetry, no analytics.
-- The only network connection by default is **model downloads** (once per model).
+- Network access is limited to **model downloads**, signed update checks, and optional cloud post-processing that you explicitly configure.
 - If you enable post-processing with an external LLM, that text does travel to the provider you configure — it's fully opt-in and configurable.
 
 ## 🚀 Vision & Roadmap
@@ -192,7 +192,7 @@ This project isn't chasing money — it's chasing **people**: connections, colla
 
 ## Project status
 
-Vozora is under active development (v0.9.x, phase 1 of the roadmap above) and updates ship regularly — the app checks for new versions and updates itself from this repository's releases. Windows is the primary and only thoroughly tested platform; the Linux/macOS code is inherited from the base and not yet verified in this fork. Issues and suggestions are welcome.
+Vozora is under active development (v0.9.x, phase 1 of the roadmap above). Windows receives signed in-app updates from this repository; Linux AppImage updates are downloaded manually from Releases. Windows is the primary and only thoroughly tested platform; Linux remains experimental and macOS is not currently released by this fork. Issues and suggestions are welcome.
 
 ## License
 

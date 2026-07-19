@@ -41,7 +41,7 @@ Robustez y privacidad sobre el motor heredado:
 - Arreglado un **deadlock** en la carga de modelos: un fallo durante la carga dejaba el estado `is_loading` atascado y bloqueaba activaciones posteriores; ahora la carga usa un guard que siempre libera.
 - Los **errores de carga de modelos se muestran en la UI** (antes fallaban en silencio y parecía que el clic no hacía nada).
 - **Caché de ajustes en memoria** (lectura de settings sin tocar disco en cada acceso, con coherencia garantizada en escritura).
-- **Las claves API se enmascaran en los logs** de depuración — un volcado de log ya no puede filtrar tus claves de post-procesado.
+- **Las claves API usan el almacén de credenciales del sistema operativo** y los logs persistentes no incluyen el contenido transcrito.
 - Identidad propia limpia: rebrand completo, nueva paleta e iconografía, cabeceras HTTP propias.
 
 ## Características
@@ -115,12 +115,12 @@ El flujo de un dictado:
 
 ### Dónde guarda las cosas
 
-| Qué | Ruta |
-|---|---|
-| Ajustes | `%APPDATA%\com.vozora.desktop\settings_store.json` |
-| Modelos descargados | `%APPDATA%\com.vozora.desktop\models\` |
-| Logs | `%LOCALAPPDATA%\com.vozora.desktop\logs\vozora.log` |
-| Ejecutable (instalación normal) | `%LOCALAPPDATA%\Vozora\vozora.exe` |
+| Qué                             | Ruta                                                |
+| ------------------------------- | --------------------------------------------------- |
+| Ajustes                         | `%APPDATA%\com.vozora.desktop\settings_store.json`  |
+| Modelos descargados             | `%APPDATA%\com.vozora.desktop\models\`              |
+| Logs                            | `%LOCALAPPDATA%\com.vozora.desktop\logs\vozora.log` |
+| Ejecutable (instalación normal) | `%LOCALAPPDATA%\Vozora\vozora.exe`                  |
 
 ### CLI para diagnóstico
 
@@ -167,7 +167,7 @@ Los instaladores quedan en `<target>/release/bundle/{nsis,msi}/`. Si el código 
 
 - El audio y las transcripciones **no salen de tu equipo**.
 - No hay telemetría ni analítica.
-- La única conexión de red por defecto es la **descarga de modelos** (una vez por modelo).
+- El acceso de red se limita a **descargas de modelos**, comprobaciones de actualizaciones firmadas y el post-procesado cloud que configures explícitamente.
 - Si activas el post-procesado con un LLM externo, ese texto sí viaja al proveedor que tú configures — es opt-in y configurable por completo.
 
 ## 🚀 Visión y Roadmap
@@ -192,7 +192,7 @@ Este proyecto no persigue dinero — persigue **personas**: conexiones, colabora
 
 ## Estado del proyecto
 
-Vozora está en desarrollo activo (v0.9.x, fase 1 del roadmap de arriba) y saca actualizaciones con regularidad — la app comprueba nuevas versiones y se actualiza sola desde las releases de este repositorio. Windows es la plataforma prioritaria y la única probada a fondo; el código de Linux/macOS se hereda de la base y aún no está verificado en este fork. Los issues y sugerencias son bienvenidos.
+Vozora está en desarrollo activo (v0.9.x, fase 1 del roadmap de arriba). Windows recibe actualizaciones firmadas desde este repositorio; en Linux el AppImage se descarga manualmente desde Releases. Windows es la plataforma prioritaria y la única probada a fondo; Linux sigue siendo experimental y este fork no publica macOS por ahora. Los issues y sugerencias son bienvenidos.
 
 ## Licencia
 

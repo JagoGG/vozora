@@ -1,13 +1,13 @@
 mod actions;
+mod app_profile;
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
 mod apple_intelligence;
-mod app_profile;
 mod audio_feedback;
 pub mod audio_toolkit;
 mod catalog;
-mod coding_mode;
 pub mod cli;
 mod clipboard;
+mod coding_mode;
 mod commands;
 mod helpers;
 mod input;
@@ -95,7 +95,7 @@ fn build_console_filter() -> env_filter::Filter {
     builder.build()
 }
 
-fn show_main_window(app: &AppHandle) {
+pub(crate) fn show_main_window(app: &AppHandle) {
     if let Some(main_window) = app.get_webview_window("main") {
         if let Err(e) = main_window.unminimize() {
             log::error!("Failed to unminimize webview window: {}", e);
@@ -762,6 +762,13 @@ pub fn run(cli_args: CliArgs) {
         .manage(cli_args.clone())
         .setup(move |app| {
             specta_builder.mount_events(app);
+
+            // History playback needs the asset protocol, but it must never expose
+            // the rest of the filesystem. Resolve the portable-aware recordings
+            // directory at runtime and scope the protocol to that directory only.
+            let recordings_dir = crate::portable::app_data_dir(app.handle())?.join("recordings");
+            app.asset_protocol_scope()
+                .allow_directory(&recordings_dir, false)?;
 
             // Headless one-shot path (`--transcribe-file` / `--list-devices` /
             // `--list-models`): initialize only what transcription needs — the

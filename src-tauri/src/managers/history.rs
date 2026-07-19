@@ -10,6 +10,14 @@ use std::path::PathBuf;
 use tauri::AppHandle;
 use tauri_specta::Event;
 
+fn is_valid_recording_file_name(file_name: &str) -> bool {
+    !file_name.is_empty()
+        && file_name != "."
+        && file_name != ".."
+        && !file_name.contains(['/', '\\'])
+        && file_name.to_ascii_lowercase().ends_with(".wav")
+}
+
 /// Database migrations for transcription history.
 /// Each migration is applied in order. The library tracks which migrations
 /// have been applied using SQLite's user_version pragma.
@@ -581,8 +589,11 @@ impl HistoryManager {
         Ok(())
     }
 
-    pub fn get_audio_file_path(&self, file_name: &str) -> PathBuf {
-        self.recordings_dir.join(file_name)
+    pub fn get_audio_file_path(&self, file_name: &str) -> Result<PathBuf> {
+        if !is_valid_recording_file_name(file_name) {
+            return Err(anyhow!("Invalid recording file name"));
+        }
+        Ok(self.recordings_dir.join(file_name))
     }
 
     pub async fn get_entry_by_id(&self, id: i64) -> Result<Option<HistoryEntry>> {
@@ -613,7 +624,7 @@ impl HistoryManager {
         // Get the entry to find the file name
         if let Some(entry) = self.get_entry_by_id(id).await? {
             // Delete the audio file first
-            let file_path = self.get_audio_file_path(&entry.file_name);
+            let file_path = self.get_audio_file_path(&entry.file_name)?;
             if file_path.exists() {
                 if let Err(e) = fs::remove_file(&file_path) {
                     error!("Failed to delete audio file {}: {}", entry.file_name, e);
@@ -733,5 +744,13 @@ mod tests {
 
         assert_eq!(entry.timestamp, 100);
         assert_eq!(entry.transcription_text, "completed");
+    }
+
+    #[test]
+    fn recording_file_names_reject_traversal() {
+        assert!(is_valid_recording_file_name("vozora-123.wav"));
+        assert!(!is_valid_recording_file_name("../outside.wav"));
+        assert!(!is_valid_recording_file_name("..\\outside.wav"));
+        assert!(!is_valid_recording_file_name("recording.mp3"));
     }
 }

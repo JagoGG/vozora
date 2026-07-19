@@ -589,14 +589,8 @@ fn should_send_auto_submit(auto_submit: bool, paste_method: PasteMethod) -> bool
     auto_submit && paste_method != PasteMethod::None
 }
 
-pub fn paste(text: String, app_handle: AppHandle) -> Result<(), String> {
-    paste_with_method_override(text, app_handle, None)
-}
-
-/// Same as [`paste`], but `override_method` (when `Some`) takes precedence
-/// over the global `paste_method` setting. Used by the app-profile system
-/// (`app_profile.rs`) so a per-application profile can pin e.g. Direct paste
-/// for a terminal even when the user's global default is CtrlV.
+/// Pastes text using `override_method` when provided, otherwise the global
+/// setting. App profiles use this to pin a method for a target application.
 pub fn paste_with_method_override(
     text: String,
     app_handle: AppHandle,

@@ -471,6 +471,7 @@ pub fn is_no_input_device_error(error_message: &str) -> bool {
 }
 
 #[cfg(test)]
+#[allow(clippy::items_after_test_module)]
 mod tests {
     use super::{is_microphone_access_denied, is_no_input_device_error};
 
