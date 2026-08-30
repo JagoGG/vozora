@@ -49,17 +49,17 @@ tauri-plugin-fs = "2.5.1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 rdev = { git = "https://github.com/rustdesk-org/rdev", rev = "871bf1c856d6a30af2f56ab8848396a025140855" }
-cpal = "0.16.0"
+cpal = "0.17.1"
 anyhow = "1.0.104"
-rubato = "0.16.2"
+rubato = "5.0.0"
 hound = "3.5.1"
 log = "0.4.33"
-env_filter = "0.1.0"
+env_filter = "2.0.0"
 tokio = "1.53.0"
 vad-rs = { git = "https://github.com/cjpais/vad-rs", rev = "2a412ed858695b9251f3f5a1a20d95b59fa7c498", default-features = false }
 enigo = "0.6.1"
 rodio = { git = "https://github.com/cjpais/rodio.git", rev = "fed30292db417cb95305c118c0e1d804fb74cbff" }
-reqwest = { version = "0.12", features = ["json", "stream"] }
+reqwest = { version = "0.13", features = ["json", "stream"] }
 futures-util = "0.3"
 rustfft = "6.4.1"
 strsim = "0.11.0"
@@ -69,13 +69,13 @@ chrono = "0.4.45"
 rusqlite = { version = "0.40.1", features = ["bundled"] }
 tar = "0.4.46"
 flate2 = "1.1.9"
-sha2 = "0.10"
+sha2 = "0.11"
 keyring = "4.1.5"
 # Whisper-family models run through transcribe-cpp (GGUF/ggml, native backends);
 # transcribe-rs is now ONNX-only (Parakeet, Moonshine, SenseVoice, GigaAM,
 # Canary, Cohere). Per-platform backend features are added in the target tables.
 transcribe-rs = { version = "0.3.11", features = ["onnx"] }
-transcribe-cpp = { version = "0.1.3", default-features = false }
+transcribe-cpp = { version = "0.2.2", default-features = false }
 handy-keys = "0.3.0"
 ferrous-opencc = "0.2.3"
 clap = { version = "4", features = ["derive"] }
@@ -133,7 +133,7 @@ transcribe-cpp = { version = "0.1.3", default-features = false, features = [
 ] }
 
 [target.'cfg(all(windows, target_arch = "aarch64"))'.dependencies]
-transcribe-cpp = { version = "0.1.3", default-features = false }
+transcribe-cpp = { version = "0.2.2", default-features = false }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", rev = "a3122e894383aa068ec5365a42994e3ac94ba1b6" }
